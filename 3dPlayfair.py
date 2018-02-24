@@ -221,7 +221,7 @@ def removeX (text):
 	firstBit = ""
 	lastBit = ""
 
-	print("texto sin el if de la x", text)
+	# print("texto sin el if de la x", text)
 	if text[-1:] == "x":
 		finalText = text[:len(text)-1] 
 	if text[-2:] == "xz":
@@ -229,9 +229,9 @@ def removeX (text):
 	for i in range(len(text)-2):
 		if text[i] == "x" and text[i-1] == text[i+1]:
 			lastBit = text[i +1:]
-			print("last bit: ", lastBit)
+			# print("last bit: ", lastBit)
 			firstBit = text[:i]
-			print("first bit: ", firstBit)
+			# print("first bit: ", firstBit)
 			finalText = firstBit + lastBit
 	return finalText
 
