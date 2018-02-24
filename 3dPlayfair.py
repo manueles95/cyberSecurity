@@ -216,7 +216,6 @@ for i in reconstructedTirpgraphs:
 	for j in i:
 		reconstructedPlainText = reconstructedPlainText + j
 
-
 def removeX (text):
 	finalText = text
 	firstBit = ""
@@ -236,38 +235,6 @@ def removeX (text):
 			finalText = firstBit + lastBit
 	return finalText
 
-
 # reconstructedPlainText = reconstructedPlainText.replace("x", "")
 reconstructedPlainText =  removeX(reconstructedPlainText)
 print("The reconstructed text is: ",reconstructedPlainText)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
