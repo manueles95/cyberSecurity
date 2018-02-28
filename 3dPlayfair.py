@@ -7,7 +7,8 @@ userInput = ""
 
 #This is the key, erroneamente llamada user input
 #podemos sustituir el user imput por un input real para que el usuario escoga su propia llave
-userInput = "friends4v@tj_201.c"
+# userInput = "friends4v@tj_201.c"
+userInput = input("Key used for encryption: ")
 userInput = userInput.replace(" ", "")
 userInput = userInput.lower()
 keyword = ""
