@@ -102,7 +102,7 @@ if trigraph != "":
 		thingsToEncode.append(trigraph)
 	if count == 2:
 	 	trigraph = trigraph + "x"
-	 	thingsToEncode.append(trigraph)				
+	 	thingsToEncode.append(trigraph)
 
 def encryptTripgraph(row, column, floor):
 	cipherTigraph = ""
@@ -142,7 +142,7 @@ def encryptTripgraph(row, column, floor):
 				cipherColumn = j
 			if floor4[i][j] == floor:
 				cipherFloor = floor4
-	
+
 	# print(row, column, floor, cipherFloor)
 	cipherTigraph =  cipherFloor[cipherRow][cipherColumn]
 	return cipherTigraph
@@ -223,10 +223,12 @@ def removeX (text):
 	lastBit = ""
 
 	# print("texto sin el if de la x", text)
-	if text[-1:] == "x":
-		finalText = text[:len(text)-1] 
-	if text[-2:] == "xz":
-		finalText = text[:len(text)-2]
+	# if text[-1:] == "x":
+	# 	finalText = finalText[:len(finalText)-1]
+	# 	print("yeahhhhhhh")
+	# 	print(finalText)
+	# if text[-2:] == "xz":
+	# 	finalText = finalText[:len(finalText)-2]
 	for i in range(len(text)-2):
 		if text[i] == "x" and text[i-1] == text[i+1]:
 			lastBit = text[i +1:]
@@ -237,5 +239,10 @@ def removeX (text):
 	return finalText
 
 # reconstructedPlainText = reconstructedPlainText.replace("x", "")
-reconstructedPlainText =  removeX(reconstructedPlainText)
-print("The reconstructed text is: ",reconstructedPlainText)
+finalText =  removeX(reconstructedPlainText)
+
+if finalText[-1:] == "x":
+	finalText = finalText[:len(finalText)-1]
+if finalText[-2:] == "xz":
+	finalText = finalText[:len(finalText)-2]
+print("The reconstructed text is: ", finalText)
