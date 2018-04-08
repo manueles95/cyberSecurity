@@ -46,7 +46,6 @@ j = 0
 for i in range (0,256):
     j =(j + s[i] + rc4Bytes[i])%256
     s[i], s[j] = s[j], s[i] #swap
-    # print(s[j])
 
 temp, i, j, count = 0 ,0 ,0, 0
 rc4KeyStream = []
@@ -74,7 +73,6 @@ c2 = []
 for i in range(j, len(plainText)):
     c2.append((cipherBytes[i] + vigenereBytes[i]) % 256)
 
-
 #adding c1 and c2 together to generate c
 c =[]
 for element in c1:
@@ -86,13 +84,10 @@ for element in c2:
 for i in c:
     cipherText = cipherText + str(chr(i))
 cipherText = cipherText + str(j)
-
 print("Your encrypted plainText is : " + cipherText)
 
 #--------------------Decryption-----------------------------#
-
 decrypt = raw_input("Do you wish to decrypt your message(y/n)")
-
 if decrypt == "y":
     #decryption of vigenere of first c1
     desencryptedVigenreBytes = [] # this could be consideres as c but for decrytion
