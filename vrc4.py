@@ -1,7 +1,15 @@
+"""
+VRC4 Implementation
+
+Authors: Manuel Escobar
+        Mauricio Figueroa
+        Victor Guiochin
+"""
+
+
 import random
 
 s = [] #vectorS
-plainText = "Hello people"
 plainTextBytes = []
 cipherText = ""
 cipherBytes = []
@@ -9,122 +17,121 @@ rc4key = "thisismykey" #<- change this for input
 rc4keylen = len(rc4key)
 rc4keyVector = [] #vectorKeyRC4
 rc4Bytes = []
-vigenereKey = "lemon" #<- change this for input
-vigenereKeylen = len(vigenereKey)
 vigenereKeyVector =[]
 vigenereBytes = []
 finalEncryptionBytes =[]
+globalj = 0
+globalc = []
 
-#initialization of s and rc4keyvector
-for i in range(0,256):
-    s.append(i)
-    rc4keyVector.append(rc4key[i%rc4keylen])
 
-#transform the rc4 key to int for ascii comparison
-for i in range(len(s)):
-    rc4Bytes.append(ord(rc4keyVector[i]))
+def encrypt(plainText):
+    #initialization of s and rc4keyvector
+    for i in range(0,256):
+        s.append(i)
+        rc4keyVector.append(rc4key[i%rc4keylen])
 
-#make vigenre key repeat itself till its the saem size as the key
-for i in range (len(plainText)):
-    vigenereKeyVector.append(vigenereKey[i%vigenereKeylen])
+    #transform the rc4 key to int for ascii comparison
+    for i in range(len(s)):
+        rc4Bytes.append(ord(rc4keyVector[i]))
 
-#transform the vigenere key to bytes for ascii
-for i in range(len(plainText)):
-    vigenereBytes.append(ord(vigenereKeyVector[i]))
+    #make vigenre key repeat itself till its the saem size as the key
+    for i in range (len(plainText)):
+        vigenereKeyVector.append(rc4key[i%rc4keylen])
 
-#transform plaintext characters into array of ints for ascii
-for i in range(len(plainText)):
-    plainTextBytes.append(ord(plainText[i]))
+    #transform the vigenere key to bytes for ascii
+    for i in range(len(plainText)):
+        vigenereBytes.append(ord(vigenereKeyVector[i]))
 
-# print(rc4key)
-# print(rc4keyVector)
-# print(rc4Bytes)
+    #transform plaintext characters into array of ints for ascii
+    for i in range(len(plainText)):
+        plainTextBytes.append(ord(plainText[i]))
 
-#initial permutation
-j = 0
-for i in range (0,256):
-    j =(j + s[i] + rc4Bytes[i])%256
-    s[i], s[j] = s[j], s[i] #swap
-    # print(s[j])
+    # print(rc4key)
+    # print(rc4keyVector)
+    # print(rc4Bytes)
 
-temp, i, j, count = 0 ,0 ,0, 0
-rc4KeyStream = []
-while count < len(plainText):
-     i = (i+1)%256
-     j = (j + s[i])%256
-     s[i], s[j] = s[j], s[i] #swap
-     temp = (s[i] + s[j])%256
-     rc4KeyStream.append(s[temp])
-     count = count + 1
-# XOR encryption done with the rc4 key and the plaintext
-for i in range(len(plainText)):
-    cipherBytes.append(rc4KeyStream[i] ^ plainTextBytes[i])
+    #initial permutation
+    j = 0
+    for i in range (0,256):
+        j =(j + s[i] + rc4Bytes[i])%256
+        s[i], s[j] = s[j], s[i] #swap
+        # print(s[j])
 
-#vigenere encryption
-for i in range(len(plainText)):
-    finalEncryptionBytes.append((cipherBytes[i] + vigenereBytes[i]) % 256)
+    temp, i, j, count = 0 ,0 ,0, 0
+    rc4KeyStream = []
+    while count < len(plainText):
+         i = (i+1)%256
+         j = (j + s[i])%256
+         s[i], s[j] = s[j], s[i] #swap
+         temp = (s[i] + s[j])%256
+         rc4KeyStream.append(s[temp])
+         count = count + 1
+    # XOR encryption done with the rc4 key and the plaintext
+    for i in range(len(plainText)):
+        cipherBytes.append(rc4KeyStream[i] ^ plainTextBytes[i])
 
-#transform ascii code to leterts
-for i in finalEncryptionBytes:
-    cipherText = cipherText + str(chr(i))
+    #random generaton oj j to break appart into c1 and c2
+    globalj = random.randint(0,(len(plainText) - 1))
+    #vigenere encryption of c1
+    c1 = []
+    for i in range(0, globalj):
+        c1.append((cipherBytes[i] + vigenereBytes[i]) % 256)
 
-print("Your encrypted plainText is : " + cipherText)
+    #vigenere encryption of c2
+    c2 = []
+    for i in range(globalj, len(plainText)):
+        c2.append((cipherBytes[i] + vigenereBytes[i]) % 256)
 
+
+    #adding c1 and c2 together to generate c
+    c =[]
+    for element in c1:
+        c.append(element)
+    for element in c2:
+        c.append(element)
+
+    globalc = c
+    cipherText = ""
+    #transform ascii code to leterts
+    for i in c:
+        cipherText = cipherText + str(chr(i))
+    cipherText = cipherText + str(globalj)
+
+    print("Your encrypted plainText is : " + cipherText)
+    print(globalj)
 #--------------------Decryption-----------------------------#
 
-#decryption of vigenere
-desencryptedVigenreBytes = []
-for i in range(len(plainText)):
-    desencryptedVigenreBytes.append((finalEncryptionBytes[i] - vigenereBytes[i]) % 256)
-# print(desencryptedVigenreBytes)
-# print(cipherBytes)
+def decrypt(plainText):
 
-#rc4 XOR decryption
-desencryptedRc4Bytes = []
-for i in range(len(plainText)):
-    desencryptedRc4Bytes.append(rc4KeyStream[i] ^ cipherBytes[i])
+    #decryption of vigenere of first c1
+    desencryptedVigenreBytes = [] # this could be consideres as c but for decrytion
+    for i in range(0,globalj):
+        desencryptedVigenreBytes.append((globalc[i] - vigenereBytes[i]) % 256)
 
-decipheredText = ""
-for i in desencryptedRc4Bytes:
-    decipheredText = decipheredText + str(chr(i))
+    #decryption of vigenere of first c2
+    for i in range(globalj,len(plainText)):
+        desencryptedVigenreBytes.append((globalc[i] - vigenereBytes[i]) % 256)
+    print(desencryptedVigenreBytes)
+    print(cipherBytes)
 
+    #rc4 XOR decryption
+    desencryptedRc4Bytes = []
+    for i in range(len(plainText)):
+        desencryptedRc4Bytes.append(rc4KeyStream[i] ^ cipherBytes[i])
 
-print("The desencrypted message is: " + decipheredText )
-
-
-
-
-
+    decipheredText = ""
+    for i in desencryptedRc4Bytes:
+        decipheredText = decipheredText + str(chr(i))
 
 
+    print("The desencrypted message is: " + decipheredText )
 
-# print(cipherBytes)
-print(desencryptedRc4Bytes)
-print(plainTextBytes)
-# print(finalEncryptionBytes)
-
-#decryption of vigenere
-# testBytes = []
-# for i in range(len(plainText)):
-#     testBytes.append((finalEncryptionBytes[i] - vigenereBytes[i]) % 256)
-#
-# print(testBytes)
+def main():
+    plainText = raw_input("Message to Encrypt: ")
+    encrypt(plainText)
+    decrypt(plainText)
 
 
 
-# print(cipherText)
-
-
-
-
-
-
-
-# test to verify that the XOR encryption in rc4 works
-# test = []
-# for i in range(len(plainText)):
-#     test.append(rc4KeyStream[i] ^ cipherBytes[i])
-#
-
-# print(cipherBytes)
-# print(test)
+if __name__ == '__main__':
+    main()

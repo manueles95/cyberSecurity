@@ -66,3 +66,49 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+
+#
+# #vigenere encryption
+# for i in range(len(plainText)):
+#     finalEncryptionBytes.append((cipherBytes[i] + vigenereBytes[i]) % 256)
+
+
+# print(cipherBytes)
+# print(desencryptedRc4Bytes)
+# print(plainTextBytes)
+# print(finalEncryptionBytes)
+
+#decryption of vigenere
+# testBytes = []
+# for i in range(len(plainText)):
+#     testBytes.append((finalEncryptionBytes[i] - vigenereBytes[i]) % 256)
+#
+# print(testBytes)
+
+
+
+# print(cipherText)
+
+
+
+
+
+
+
+# test to verify that the XOR encryption in rc4 works
+# test = []
+# for i in range(len(plainText)):
+#     test.append(rc4KeyStream[i] ^ cipherBytes[i])
+#
+
+# print(cipherBytes)
+# print(test)
