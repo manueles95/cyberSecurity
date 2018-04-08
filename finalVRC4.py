@@ -1,9 +1,9 @@
 """
 VRC4 Implementation
 
-Authors: Manuel Escobar
-        Mauricio Figueroa
-        Victor Guiochin
+Authors: Manuel Escobar 149688
+        Mauricio Figueroa 151504
+        Victor Guiochin 149999
 """
 import random
 
@@ -87,7 +87,7 @@ cipherText = cipherText + str(j)
 print("Your encrypted plainText is : " + cipherText)
 
 #--------------------Decryption-----------------------------#
-decrypt = raw_input("Do you wish to decrypt your message(y/n)")
+decrypt = raw_input("Do you wish to decrypt your message? (y/n) ")
 if decrypt == "y":
     #decryption of vigenere of first c1
     desencryptedVigenreBytes = [] # this could be consideres as c but for decrytion
@@ -103,12 +103,12 @@ if decrypt == "y":
     #rc4 XOR decryption
     desencryptedRc4Bytes = []
     for i in range(len(plainText)):
-        desencryptedRc4Bytes.append(rc4KeyStream[i] ^ cipherBytes[i])
+        desencryptedRc4Bytes.append(rc4KeyStream[i] ^ desencryptedVigenreBytes[i])
 
     decipheredText = ""
     for i in desencryptedRc4Bytes:
         decipheredText = decipheredText + str(chr(i))
 
-    print("The desencrypted message is: " + decipheredText )
+    print("The decrypted message is: " + decipheredText )
 else:
     pass
